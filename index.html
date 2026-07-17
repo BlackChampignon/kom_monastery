@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>МАНАСТИР КОМ</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <!-- Заголовок стилизован под шрифт из pdf -->
+            <h1>МАНАСТИР КОМ</h1>
+        </div>
+        <div class="lang-selector">
+            <label for="lang">Language: </label>
+            <select id="lang">
+                <option value="en" selected>English</option>
+                <option value="srb">Српски (Srpski)</option>
+                <option value="ru">Русский</option>
+                <option value="pl">Polski</option>
+                <option value="de">Deutsch</option>
+                <option value="es">Español</option>
+                <option value="fr">Français</option>
+            </select>
+        </div>
+    </header>
+    
+    <main class="pdf-container">
+        <!-- По умолчанию загружается английская версия -->
+        <iframe id="pdf-viewer" src="docs/en.pdf" title="PDF Viewer"></iframe>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
