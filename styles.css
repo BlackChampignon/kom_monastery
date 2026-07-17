@@ -1,4 +1,4 @@
-/* Сбрасываем стандартные отступы браузера */
+/* Reset default browser margins */
 * {
     margin: 0;
     padding: 0;
@@ -6,9 +6,9 @@
 }
 
 body {
-    /* Шрифт с засечками для классического стиля */
+    /* Serif font for the classic manuscript style */
     font-family: "Georgia", "Times New Roman", serif; 
-    /* Кремово-бежевый фон, взятый с твоего скриншота */
+    /* Creamy-beige background */
     background-color: #f4f0e6; 
     color: #1a1a1a;
     height: 100vh;
@@ -32,6 +32,7 @@ body {
     font-size: 1.8rem;
     font-weight: normal;
     letter-spacing: 2px;
+    text-align: center;
 }
 
 .lang-selector {
@@ -42,7 +43,7 @@ body {
 }
 
 select {
-    padding: 6px 12px;
+    padding: 8px 12px;
     font-family: inherit;
     font-size: 1rem;
     background-color: #fff;
@@ -61,11 +62,37 @@ select:focus {
 .pdf-container {
     flex-grow: 1;
     width: 100%;
-    background-color: #e0dcd2; /* Чуть более темный фон за рамками pdf для контраста */
+    background-color: #e0dcd2;
 }
 
 #pdf-viewer {
     width: 100%;
     height: 100%;
     border: none;
+}
+
+@media (max-width: 600px) {
+    .header {
+        /* Stack the title and the language selector */
+        flex-direction: column;
+        padding: 15px;
+        gap: 15px;
+    }
+
+    .logo h1 {
+        /* Slightly smaller text for mobile */
+        font-size: 1.5rem; 
+    }
+
+    .lang-selector {
+        width: 100%;
+        justify-content: center;
+    }
+
+    select {
+        /* Make the dropdown span wider for easier tapping on touch screens */
+        width: 100%;
+        max-width: 250px;
+        padding: 10px;
+    }
 }
