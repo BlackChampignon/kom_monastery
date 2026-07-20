@@ -1,31 +1,39 @@
 document.addEventListener('DOMContentLoaded', () => {
     const langSelect = document.getElementById('lang');
-    const pdfViewer = document.getElementById('pdf-viewer');
 
-    function getPdfUrl(lang) {
-        // check if the device is mobile based on window width or touch capability
-        const isMobile = window.innerWidth <= 1320 || ('ontouchstart' in window);
-        
-        if (isMobile) {
-            // FitH for mobile devices
-            return `docs/${lang}.pdf#toolbar=0&navpanes=0&view=FitH`;
-        } else {
-            // For desktop
-            return `docs/${lang}.pdf`;
-        }
-    }
-
-    function updatePDF() {
+    function displayPDF() {
         const selectedLang = langSelect.value;
-        pdfViewer.src = getPdfUrl(selectedLang);
-    }
-    updatePDF();
-    langSelect.addEventListener('change', updatePDF);
+        const fileUrl = `docs/${selectedLang}.pdf`;
 
-    // If desktop resize
+        const isMobile = window.innerWidth <= 1024 || ('ontouchstart' in window);
+        // Conf for mobile
+        const options = isMobile ? {
+            // Mobile parameters: Hide all toolbars, fit to horizontal width
+            pdfOpenParams: { 
+                toolbar: 0, 
+                navpanes: 0, 
+                statusbar: 0, 
+                view: 'FitH' 
+            }
+        } : {
+            // Desktop params
+            pdfOpenParams: { 
+                toolbar: 1, 
+                navpanes: 0 
+            }
+        };
+        // Dynamic embedding
+        PDFObject.embed(fileUrl, "#pdf-container", options);
+    }
+
+
+    displayPDF();
+
+    langSelect.addEventListener('change', displayPDF);
+
     let resizeTimeout;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(updatePDF, 250);
+        resizeTimeout = setTimeout(displayPDF, 250);
     });
 });
