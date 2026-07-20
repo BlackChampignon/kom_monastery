@@ -14,7 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         pdfjsLib.getDocument(fileUrl).promise.then(pdf => {
             currentPdf = pdf;
-
+            
+            // Pages rendering
             for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
                 renderPage(pageNum);
             }
@@ -26,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderPage(pageNum) {
         currentPdf.getPage(pageNum).then(page => {
             const containerWidth = container.clientWidth > 0 ? container.clientWidth : window.innerWidth;
+            // Space for padding and margins, adjust as needed
             const targetWidth = window.innerWidth < 768 ? containerWidth - 20 : Math.min(containerWidth - 60, 900);
             
             const unscaledViewport = page.getViewport({ scale: 1 });
@@ -36,7 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const context = canvas.getContext('2d');
             canvas.height = viewport.height;
             canvas.width = viewport.width;
-
             container.appendChild(canvas);
 
             const renderContext = {
@@ -46,6 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
             page.render(renderContext);
         });
     }
+
 
     renderPDF();
 
