@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function getPdfUrl(lang) {
         // check if the device is mobile based on window width or touch capability
-        const isMobile = window.innerWidth <= 768 || ('ontouchstart' in window);
+        const isMobile = window.innerWidth <= 1320 || ('ontouchstart' in window);
         
         if (isMobile) {
             // FitH for mobile devices
