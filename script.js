@@ -1,70 +1,22 @@
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-
 document.addEventListener('DOMContentLoaded', () => {
     const langSelect = document.getElementById('lang');
-    const container = document.getElementById('pdf-render-container');
+    const pdfViewer = document.getElementById('pdf-viewer');
+    const pdfEmbed = document.getElementById('pdf-embed');
 
-    let currentPdf = null;
-
-    function renderPDF() {
+    function updatePDF() {
         const selectedLang = langSelect.value;
-        const fileUrl = `docs/${selectedLang}.pdf`;
+        // Cache-busting timestamp to prevent the phone from holding onto old versions
+        const version = new Date().getTime();
+        const fileUrl = `docs/${selectedLang}.pdf?v=${version}#toolbar=0&navpanes=0&view=FitH`;
 
-        container.innerHTML = '';
-
-        pdfjsLib.getDocument(fileUrl).promise.then(pdf => {
-            currentPdf = pdf;
-            
-            // Pages rendering
-            for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-                renderPage(pageNum);
-            }
-        }).catch(error => {
-            console.error('Ошибка загрузки PDF: ', error);
-        });
+        // Update both container properties for comprehensive cross-browser matching
+        pdfViewer.data = fileUrl;
+        pdfEmbed.src = fileUrl;
     }
 
-    function renderPage(pageNum) {
-        currentPdf.getPage(pageNum).then(page => {
-            const outputScale = window.devicePixelRatio || 1;
+    // Run immediately on page load
+    updatePDF();
 
-            const containerWidth = container.clientWidth > 0 ? container.clientWidth : window.innerWidth;
-            const targetWidth = window.innerWidth < 768 ? containerWidth - 20 : Math.min(containerWidth - 60, 900);
-            
-            const unscaledViewport = page.getViewport({ scale: 1 });
-            const scale = targetWidth / unscaledViewport.width;
-            const viewport = page.getViewport({ scale: scale });
-
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-
-            canvas.width = Math.floor(viewport.width * outputScale);
-            canvas.height = Math.floor(viewport.height * outputScale);
-
-            canvas.style.width = viewport.width + "px";
-            canvas.style.height = viewport.height + "px";
-
-            const transform = outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null;
-            
-            container.appendChild(canvas);
-
-            const renderContext = {
-                canvasContext: context,
-                transform: transform,
-                viewport: viewport
-            };
-            page.render(renderContext);
-        });
-    }
-
-
-    renderPDF();
-
-    langSelect.addEventListener('change', renderPDF);
-
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(renderPDF, 300);
-    });
+    // Run whenever the dropdown selector updates
+    langSelect.addEventListener('change', updatePDF);
 });

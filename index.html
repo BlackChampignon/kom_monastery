@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>МАНАСТИР КОМ</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-</head>
+    </head>
 <body>
     <header class="header">
         <div class="logo">
@@ -26,7 +25,9 @@
     </header>
     
     <main class="pdf-container">
-        <div id="pdf-render-container" class="pdf-render-container"></div>
+        <object id="pdf-viewer" data="" type="application/pdf">
+            <embed id="pdf-embed" src="" type="application/pdf">
+        </object>
     </main>
 
     <script src="script.js"></script>
