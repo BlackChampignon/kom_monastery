@@ -25,7 +25,12 @@
         </div>
     </header>
     
-    <main id="pdf-container" class="pdf-container"></main>
+    <main class="pdf-container">
+    <!-- Оборачиваем iframe в дополнительныйdiv-скафандр -->
+    <div class="pdf-wrapper">
+        <iframe id="pdf-viewer" src="docs/en.pdf#view=FitH" title="PDF Viewer"></iframe>
+    </div>
+</main>
 
     <script src="script.js"></script>
 </body>
