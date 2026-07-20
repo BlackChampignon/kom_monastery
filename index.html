@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>МАНАСТИР КОМ</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.3.0/pdfobject.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 </head>
 <body>
     <header class="header">
@@ -26,11 +26,8 @@
     </header>
     
     <main class="pdf-container">
-    <!-- Оборачиваем iframe в дополнительныйdiv-скафандр -->
-    <div class="pdf-wrapper">
-        <iframe id="pdf-viewer" src="docs/en.pdf#view=FitH" title="PDF Viewer"></iframe>
-    </div>
-</main>
+        <div id="pdf-render-container" class="pdf-render-container"></div>
+    </main>
 
     <script src="script.js"></script>
 </body>

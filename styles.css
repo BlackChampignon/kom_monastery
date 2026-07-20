@@ -79,30 +79,29 @@ select:focus {
 .pdf-container {
     flex-grow: 1;
     width: 100%;
+    height: 100%;
     background-color: #e0dcd2;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 20px 0;
 }
 
-.pdf-wrapper {
+.pdf-render-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
     width: 100%;
-    height: 100%;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch; 
 }
 
-#pdf-viewer {
-    width: 100%;
-    height: 100%;
-    border: none;
-    display: block;
-    min-width: 100%;
+.pdf-render-container canvas {
+    max-width: 100%;
+    height: auto !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
 }
 
 @media (max-width: 768px) {
-    #pdf-viewer {
-        /* Вычитаем высоту шапки, чтобы фрейм не улетал вниз на телефонах */
-        height: calc(100vh - 80px); 
-    }
-    
     .header {
         flex-direction: column;
         padding: 15px;

@@ -1,30 +1,59 @@
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     const langSelect = document.getElementById('lang');
-    const pdfViewer = document.getElementById('pdf-viewer');
+    const container = document.getElementById('pdf-render-container');
 
-    function updatePDF() {
+    let currentPdf = null;
+
+    function renderPDF() {
         const selectedLang = langSelect.value;
-        const isMobile = window.innerWidth <= 1320 || ('ontouchstart' in window);
-        
-        if (isMobile) {
-            // Для мобильных — чистим тулбары и фиксируем по ширине экрана
-            pdfViewer.src = `docs/${selectedLang}.pdf#toolbar=0&navpanes=0&view=FitH`;
-        } else {
-            // Для ПК — десктопный стандартный вид
-            pdfViewer.src = `docs/${selectedLang}.pdf`;
-        }
+        const fileUrl = `docs/${selectedLang}.pdf`;
+
+        container.innerHTML = '';
+
+        pdfjsLib.getDocument(fileUrl).promise.then(pdf => {
+            currentPdf = pdf;
+
+            for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                renderPage(pageNum);
+            }
+        }).catch(error => {
+            console.error('Ошибка загрузки PDF: ', error);
+        });
     }
 
-    // Загрузка при старте
-    updateContent();
+    function renderPage(pageNum) {
+        currentPdf.getPage(pageNum).then(page => {
+            const containerWidth = container.clientWidth > 0 ? container.clientWidth : window.innerWidth;
+            const targetWidth = window.innerWidth < 768 ? containerWidth - 20 : Math.min(containerWidth - 60, 900);
+            
+            const unscaledViewport = page.getViewport({ scale: 1 });
+            const scale = targetWidth / unscaledViewport.width;
+            const viewport = page.getViewport({ scale: scale });
 
-    // Следим за выбором языка
-    langSelect.addEventListener('change', updatePDF);
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
 
-    // Следим за поворотом экрана/изменением размера окна
+            container.appendChild(canvas);
+
+            const renderContext = {
+                canvasContext: context,
+                viewport: viewport
+            };
+            page.render(renderContext);
+        });
+    }
+
+    renderPDF();
+
+    langSelect.addEventListener('change', renderPDF);
+
     let resizeTimeout;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(updatePDF, 250);
+        resizeTimeout = setTimeout(renderPDF, 300);
     });
 });
