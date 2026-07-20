@@ -26,8 +26,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderPage(pageNum) {
         currentPdf.getPage(pageNum).then(page => {
+            const outputScale = window.devicePixelRatio || 1;
+
             const containerWidth = container.clientWidth > 0 ? container.clientWidth : window.innerWidth;
-            // Space for padding and margins, adjust as needed
             const targetWidth = window.innerWidth < 768 ? containerWidth - 20 : Math.min(containerWidth - 60, 900);
             
             const unscaledViewport = page.getViewport({ scale: 1 });
@@ -36,12 +37,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
-            canvas.height = viewport.height;
-            canvas.width = viewport.width;
+
+            canvas.width = Math.floor(viewport.width * outputScale);
+            canvas.height = Math.floor(viewport.height * outputScale);
+
+            canvas.style.width = viewport.width + "px";
+            canvas.style.height = viewport.height + "px";
+
+            const transform = outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null;
+            
             container.appendChild(canvas);
 
             const renderContext = {
                 canvasContext: context,
+                transform: transform,
                 viewport: viewport
             };
             page.render(renderContext);
