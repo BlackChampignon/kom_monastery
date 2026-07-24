@@ -85,27 +85,19 @@ select:focus {
     overflow: hidden;
 }
 
-.desktop-viewer {
-    width: 100%;
-    height: 100%;
-    border: none;
-    display: block;
-}
-
-.mobile-viewer {
-    display: none;
+.image-viewer {
     width: 100%;
     height: 100%;
     overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    background-color: #e0dcd2;
+    -webkit-overflow-scrolling: touch; 
+    display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center; 
 }
 
-.mobile-viewer img {
+.image-viewer img {
     width: 100%;
-    max-width: 100%;
+    max-width: 1200px;
     height: auto;
     display: block;
 }
@@ -130,13 +122,5 @@ select:focus {
         width: 100%;
         max-width: 250px;
         padding: 10px;
-    }
-
-    .desktop-viewer {
-        display: none !important;
-    }
-
-    .mobile-viewer {
-        display: flex !important;
     }
 }
