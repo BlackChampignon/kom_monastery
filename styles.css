@@ -76,44 +76,67 @@ select:focus {
   box-shadow: rgba(72, 35, 7, .46) 0 0 0 4px, -6px 8px 10px rgba(81,41,10,0.1), 0px 2px 2px rgba(81,41,10,0.2);
 }
 
-.pdf-container {
+.content-container {
     flex-grow: 1;
     width: 100%;
     height: 100%;
     background-color: #e0dcd2;
+    position: relative;
     overflow: hidden;
 }
 
-#pdf-viewer, #pdf-embed {
+.desktop-viewer {
     width: 100%;
     height: 100%;
     border: none;
     display: block;
 }
 
-@media (max-width: 768px) {
+.mobile-viewer {
+    display: none;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    background-color: #e0dcd2;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mobile-viewer img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+@media (max-width: 1024px) {
     .header {
         flex-direction: column;
         padding: 15px;
         gap: 15px;
     }
+    
     .logo h1 {
         font-size: 1.5rem; 
     }
+    
     .lang-selector {
         width: 100%;
         justify-content: center;
     }
+    
     select {
         width: 100%;
         max-width: 250px;
         padding: 10px;
     }
-    
-    /* Force mobile viewports to tightly constraint vector PDFs */
-    #pdf-viewer, #pdf-embed {
-        width: 100vw;
-        max-width: 100%;
-        height: calc(100vh - 90px);
+
+    .desktop-viewer {
+        display: none !important;
+    }
+
+    .mobile-viewer {
+        display: flex !important;
     }
 }
